@@ -154,41 +154,49 @@ void searchStudent(vector<string> &listname, vector<vector<float>> &listScores)
 }
 
 // UpdateStudent
-// void updateStudent(vector<string> &listname, vector<vector<int>> &listScores)
-// {
-//     string name;
-//     cout << "Enter student name you want to update: ";
-//     cin.ignore();
-//     getline(cin, name);
+void updateStudent(vector<string> &listname, vector<vector<float>> &listScores)
+{
+    string name;
+    cout << "Enter student name you want to update: ";
+    cin.ignore();
+    getline(cin, name);
 
-//     for (int i = 0; i < listname.size(); ++i)
-//     {
-//         if (listname[i] == name)
-//         {
-//             string nameUpdate;
-//             int newScore;
-//             vector<int> newStudentScores(3);
-//             cout << "Enter new student name ";
-//             cin.ignore();
-//             getline(cin, nameUpdate);
+    for (int i = 0; i < listname.size(); ++i)
+    {
+        if (listname[i] == name)
+        {
+            string newName;
+            int newScore;
+            vector<float> newStudentScores(3);
 
-//             cout << "Update Math score: ";
-//             cin >> newScore;
-//             newStudentScores[0] = newScore;
+            cout << "Enter new student name: ";
+            getline(cin, newName);
+            if (!newName.empty())
+            {
+                listname[i] = newName;
+            }
 
-//             cout << "Update Literature score: ";
-//             cin >> newScore;
-//             newStudentScores[1] = newScore;
+            cout << "Enter new Math score: ";
+            cin >> newScore;
+            newStudentScores[0] = newScore;
 
-//             cout << "Update English score: ";
-//             cin >> newScore;
-//             newStudentScores[2] = newScore;
-//             cout << "Update student completed....";
-//             return;
-//         }
-//     }
-//     cout << "student not exist in the list";
-// }
+            cout << "Enter new Literature score: ";
+            cin >> newScore;
+            newStudentScores[1] = newScore;
+
+            cout << "Enter new English score: ";
+            cin >> newScore;
+            newStudentScores[2] = newScore;
+
+            listScores[i] = newStudentScores;
+
+            cout << "Student information updated successfully.\n";
+            return;
+        }
+    }
+
+    cout << "Student not found in the list.\n";
+}
 
 // Show student had average < 5
 void showStudentsBelowAverage(vector<string> &listname, vector<vector<float>> &listScores)
@@ -284,7 +292,7 @@ int main()
     vector<string> studentName;
     vector<vector<float>> studentScores;
     // Load data from file
-    loadStudentFromFile("studentDB.txt",studentName,studentScores);
+    loadStudentFromFile("studentDB.txt", studentName, studentScores);
 
     // Menu program
     char option;
@@ -330,7 +338,7 @@ int main()
                     removeStudent(studentName, studentScores);
                     break;
                 case '4':
-                    // updateStudent(studentName, studentScores);
+                    updateStudent(studentName, studentScores);
                     break;
                 case '5':
                     searchStudent(studentName, studentScores);
