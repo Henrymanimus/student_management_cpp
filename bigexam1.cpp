@@ -34,7 +34,7 @@ void loadStudentFromFile(const string &filename, vector<string> &listname, vecto
         string name;
         float math, english, literature, average;
 
-        // Đọc dữ liệu từ chuỗi tách ra
+        // read
         splitData >> name >> math >> literature >> english >> average;
         listname.push_back(name);
         listScores.push_back({math, literature, english, average});
@@ -91,7 +91,7 @@ void addStudent(vector<string> &names, vector<vector<float>> &scores)
     getline(cin, name);
     names.push_back(name);
 
-    // enterponit
+    // enter point
     cout << "Enter Math score: ";
     cin >> studentScores[0];
     cout << "Enter Literature score: ";
@@ -198,6 +198,91 @@ void updateStudent(vector<string> &listname, vector<vector<float>> &listScores)
     cout << "Student not found in the list.\n";
 }
 
+// show top student
+void showTopStudent(vector<string> &listName, vector<vector<float>> &listScore, int enterTop, int subjectIndex)
+{
+    if (subjectIndex == 0)
+    {
+        // create vector pair
+        vector<pair<float, string>> topStudentMathList;
+        for (int i = 0; i < listName.size(); i++)
+        {
+            topStudentMathList.push_back({listScore[i][0], listName[i]});
+        }
+
+        // sort
+        sort(topStudentMathList.begin(), topStudentMathList.end(), greater<pair<float, string>>());
+
+        // show
+        int count = min(enterTop, static_cast<int>(topStudentMathList.size()));
+        for (int i = 0; i < count; i++)
+        {
+            cout << "Name: " << topStudentMathList[i].second << ", math: " << topStudentMathList[i].first << endl;
+        }
+    }
+
+    if (subjectIndex == 1)
+    {
+        // create vector pair
+        vector<pair<float, string>> topStudentLiteratureList;
+        for (int i = 0; i < listName.size(); i++)
+        {
+
+            topStudentLiteratureList.push_back({listScore[i][1], listName[i]});
+        }
+
+        // sort
+        sort(topStudentLiteratureList.begin(), topStudentLiteratureList.end(), greater<pair<float, string>>());
+
+        // show
+        int count2 = min(enterTop, static_cast<int>(topStudentLiteratureList.size()));
+        for (int i = 0; i < count2; i++)
+        {
+            cout << "Name: " << topStudentLiteratureList[i].second << ", literature: " << topStudentLiteratureList[i].first << endl;
+        }
+    }
+
+    if (subjectIndex == 2)
+    {
+        // create vector pair
+        vector<pair<float, string>> topStudentEnglishList;
+        for (int i = 0; i < listName.size(); i++)
+        {
+
+            topStudentEnglishList.push_back({listScore[i][2], listName[i]});
+        }
+
+        // sort
+        sort(topStudentEnglishList.begin(), topStudentEnglishList.end(), greater<pair<float, string>>());
+
+        // show
+        int count3 = min(enterTop, static_cast<int>(topStudentEnglishList.size()));
+        for (int i = 0; i < count3; i++)
+        {
+            cout << "Name: " << topStudentEnglishList[i].second << ", english: " << topStudentEnglishList[i].first << endl;
+        }
+    }
+    else
+        {
+            // create vector pair
+            vector<pair<float, string>> topStudentAverageList;
+            for (int i = 0; i < listName.size(); i++) {
+
+                float score = (listScore[i][0] + listScore[i][1] + listScore[i][2]) / 3.0;
+                topStudentAverageList.push_back({score, listName[i]});
+            }
+
+            // sort
+            sort(topStudentAverageList.begin(), topStudentAverageList.end(), greater<pair<float, string>>());
+
+            // show
+            int count3 = min(enterTop, static_cast<int>(topStudentAverageList.size()));
+            for (int i = 0; i < count3; i++) {
+                cout << "Name: " << topStudentAverageList[i].second << ", english: " << topStudentAverageList[i].first << endl;
+            }
+        }
+}
+
 // Show student had average < 5
 void showStudentsBelowAverage(vector<string> &listname, vector<vector<float>> &listScores)
 {
@@ -242,6 +327,36 @@ void addClass(vector<string> &classes)
     classes.push_back(nameClass);
     cout << "Add class completed...." << endl;
 }
+
+//Update class
+void updateClass(vector<string> &classes)
+{
+    string name;
+    cout << "Enter class name you want to update: ";
+    cin.ignore();
+    getline(cin, name);
+
+    for (int i = 0; i < classes.size(); ++i)
+    {
+        if (classes[i] == name)
+        {
+            string newName;
+
+            cout << "Enter new class name: ";
+            getline(cin, newName);
+            if (!newName.empty())
+            {
+                classes[i] = newName;
+            }
+
+            cout << "Class information updated successfully.\n";
+            return;
+        }
+    }
+
+    cout << "Class not found in the list.\n";
+}
+
 
 // remove class
 void removeClass(vector<string> &classes)
@@ -344,7 +459,13 @@ int main()
                     searchStudent(studentName, studentScores);
                     break;
                 case '6':
-                    // show top student
+                    int enterTopStudent;
+                    cout << "Enter number of top you want to show: ";
+                    cin >> enterTopStudent;
+                    int enterSubject;
+                    cout << "Enter which subject you want to show (0: Math, 1: Literature, 2: English, 3: Average): ";
+                    cin >> enterSubject;
+                    showTopStudent(studentName, studentScores, enterTopStudent, enterSubject);
                     break;
                 case '7':
                     showStudentsBelowAverage(studentName, studentScores);
@@ -378,6 +499,8 @@ int main()
             cout << "3. Remove Class" << endl;
             cout << "4. Update Class" << endl;
             cout << "5. Search Class by name" << endl;
+            cout << "5. View student list of a class" << endl;
+            cout << "5. View Top Class" << endl;
             cout << "q. Quit" << endl;
             while (true)
             {
@@ -397,7 +520,7 @@ int main()
                     removeClass(className);
                     break;
                 case '4':
-                    // updateStudent(studentName, studentScores);
+                    updateClass(className);
                     break;
                 case '5':
                     searchClass(className);
